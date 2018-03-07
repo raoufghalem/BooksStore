@@ -1,4 +1,4 @@
-package bootstrap;
+package com.bookstore.bootstrap;
 
 
 import com.bookstore.model.Author;
