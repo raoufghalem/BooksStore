@@ -10,44 +10,40 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Book {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long Id;
-	
+	private long id;	
 	private String title;
 	private String isbn;
-	private String publisher;
-	
+	@OneToOne
+	private Publisher publisher;	 
 	@ManyToMany
 	@JoinTable(name ="author_book", joinColumns = @JoinColumn(name = "book_id"),
 	inverseJoinColumns = @JoinColumn(name="author_id"))
 	private Set<Author> authors = new HashSet<>();
 	
-	public Book() {}
-	public Book(String title, String isbn, String publisher) {
+	public Book() {}	
+	public Book(String title, String isbn, Publisher publisher) {
+		super();
 		this.title = title;
 		this.isbn = isbn;
-		this.publisher = publisher;		
-	}
-	public Book(String title, String isbn, String publisher, Set<Author> authors) {
-		this.title = title;
-		this.isbn = isbn;
-		this.publisher = publisher;		
-		this.authors = authors;
+		this.publisher = publisher;
 	}
 
 	
 	
 	//setters and getters
+	
 	public long getId() {
-		return Id;
+		return id;
 	}
 	public void setId(long id) {
-		Id = id;
+		this.id = id;
 	}
 	public String getTitle() {
 		return title;
@@ -61,10 +57,10 @@ public class Book {
 	public void setIsbn(String isbn) {
 		this.isbn = isbn;
 	}
-	public String getPublisher() {
+	public Publisher getPublisher() {
 		return publisher;
 	}
-	public void setPublisher(String publisher) {
+	public void setPublisher(Publisher publisher) {
 		this.publisher = publisher;
 	}
 	public Set<Author> getAuthors() {
@@ -75,13 +71,17 @@ public class Book {
 	}
 	
 	
+	
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (Id ^ (Id >>> 32));
+		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -91,7 +91,7 @@ public class Book {
 		if (getClass() != obj.getClass())
 			return false;
 		Book other = (Book) obj;
-		if (Id != other.Id)
+		if (id != other.id)
 			return false;
 		return true;
 	}
@@ -99,10 +99,9 @@ public class Book {
 	
 	@Override
 	public String toString() {
-		return "Book [Id=" + Id +
+		return "Book [Id=" + id +
 				", title=" + title + 
-				", isbn=" + isbn + 
-				", publisher=" + publisher + 
+				", isbn=" + isbn + 				
 				", authors="+ authors + "]";
 	}
 	
